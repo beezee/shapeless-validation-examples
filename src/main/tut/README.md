@@ -10,21 +10,22 @@ using only field types for which a validator has been defined.
 Let's define two types, one that can be validated and one that cannot:
 
 ```tut
-case class Foo(s: String, i: Int)
-case class Bar(s: String, is: List[Int])
+import shapeless.tag.@@
+import Tags._
+
+case class User(email: String @@ Email, age: Int @@ Age)
+case class Superuser(email: String @@ Email, age: Int @@ Age, accessLevel: Int)
 ```
 
-Foo can be validated because all of its field types have a definition in the validated Poly1
+User can be validated because all of its field types have a definition in the validated Poly1
 
 ```tut
-Example.validate(Foo("foo", 1))
-Example.validate(Foo("foobar", 10))
+Example.validate(User("yungun", 17))
+Example.validate(User("brian@gmail", 32))
 ```
 
-Because Bar contains fields which do not define a validator, validation fails to compile:
+Because Superuser contains fields which do not define a validator, validation fails to compile:
 
 ```tut:fail
-Example.validate(Bar("bar", List(1)))
+Example.validate(Superuser("admin", 24, 7))
 ```
-
-More about using type tags will go here...

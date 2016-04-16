@@ -3,14 +3,24 @@ import scalaz.syntax.std.boolean._
 import scalaz.syntax.std.option._
 import scalaz.syntax.validation._
 import scalaz.{NonEmptyList, ValidationNel}
-import shapeless.{HList, Poly1}
+import shapeless.{HList, Poly1, tag}
 import shapeless.Generic
 import shapeless.ops.hlist._
 import shapeless.ops.hlist.Mapper
+import scala.language.implicitConversions
+import tag.@@
+import Tags._
+
+object Tags {
+  implicit def tagA[A, B](a: A): A @@ B = tag[B](a)
+  trait Age
+  trait Email
+}
 
 object validated extends Poly1 {
-  implicit def intCase = at[Int](i => (i > 5).option(true).toSuccess(NonEmptyList("Number too short")))
-  implicit def stringCase = at[String](s => (s.length > 5).option(true).toSuccess(NonEmptyList("String too short")))
+  implicit def age = at[Int @@ Age](i => (i > 18).option(true).toSuccess(NonEmptyList("Too young")))
+  implicit def email =
+    at[String @@ Email](s => (s.contains("@")).option(true).toSuccess(NonEmptyList("Invalid email")))
 }
 
 object Example extends App {
