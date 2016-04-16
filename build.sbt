@@ -9,3 +9,4 @@ libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.2.2"
 )
 
+tutSettings
