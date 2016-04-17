@@ -1,14 +1,10 @@
-import shapeless.{HList, HNil}
+import shapeless.{HList, HNil, LabelledGeneric, Lazy, Witness}
 import shapeless.labelled.{field, FieldType}
-import shapeless.{LabelledGeneric, Lazy, Witness}
-import shapeless.ops.hlist.Mapper
-import shapeless.ops.record.{Fields, Keys}
 import shapeless.syntax.singleton._
 import scalaz.syntax.applicative._
 import scalaz.syntax.nel._
-import scalaz.syntax.std.string._
 import scalaz.syntax.validation._
-import scalaz.{\/, NonEmptyList, ValidationNel}
+import scalaz.{\/, ValidationNel}
 
 trait Parser[L, A] {
   def apply(ma: Map[String, Any]): ValidationNel[L, A]
